@@ -23,6 +23,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     'Risk & Resilience'
   ];
 
+  // Emojis only for rail HEADERS, not cards
+  const categoryEmojis = {
+    'Strategy & Positioning': '\u2693\ufe0f',
+    'Growth & Scaling': '\ud83d\udcc8',
+    'Building & Innovation': '\ud83d\udee0\ufe0f',
+    'Customer & Brand': '\u2764\ufe0f',
+    'Career & Skills': '\u2b50',
+    'Risk & Resilience': '\u26a1'
+  };
+
   // --- Fetch ---
   try {
     const [lRes, eRes] = await Promise.all([
@@ -123,7 +133,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     for (const cat of categoryOrder) {
       const items = allLearnings.filter(l => l.category === cat);
       if (!items.length) continue;
-      html += buildRail(cat, `cat:${cat}`,
+      const emoji = categoryEmojis[cat] || '';
+      html += buildRail(`${emoji} ${cat}`, `cat:${cat}`,
         items.map(l => learningCard(l, false, items)).join('')
       );
     }
