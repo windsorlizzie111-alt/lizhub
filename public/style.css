@@ -1384,12 +1384,10 @@ body {
 
 .ep-rail-card {
   width: 280px;
-  height: 76px;
 }
 
 .ep-grid-card {
   width: auto;
-  height: 76px;
 }
 
 .ep-card-date {
@@ -1461,12 +1459,12 @@ body {
 
 .ln-rail-card {
   width: 280px;
-  height: 160px;
+  min-height: 170px;
 }
 
 .ln-grid-card {
   width: auto;
-  height: 160px;
+  min-height: 170px;
 }
 
 .ln-card-company {
@@ -1808,7 +1806,7 @@ body {
 
   .ln-rail-card {
     width: 250px;
-    height: 150px;
+    min-height: 160px;
   }
 
   .grid-header {
@@ -1826,8 +1824,7 @@ body {
   }
 
   .ln-grid-card {
-    height: auto;
-    min-height: 140px;
+    min-height: 150px;
   }
 
   .detail-header {
@@ -1889,13 +1886,12 @@ body {
 
   .ep-rail-card {
     width: 230px;
-    height: 70px;
     padding: 12px 14px;
   }
 
   .ln-rail-card {
     width: 230px;
-    height: 140px;
+    min-height: 150px;
     padding: 14px;
   }
 
