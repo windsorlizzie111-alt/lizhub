@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       btn.addEventListener('click', () => {
         const row = document.getElementById(btn.dataset.rail);
         const dir = btn.classList.contains('rail-chevron-left') ? -1 : 1;
-        row.scrollBy({ left: dir * 320, behavior: 'smooth' });
+        row.scrollBy({ left: dir * (row.clientWidth * 0.8), behavior: 'smooth' });
       });
     });
 
