@@ -4,8 +4,9 @@
     {
       "name": "lizhub",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["/Users/elizabethwindsor/Documents/Claude_lizhub/server.js"],
-      "port": 3888
+      "runtimeArgs": ["server.js"],
+      "port": 3888,
+      "cwd": "/Users/elizabethwindsor/Documents/Claude_lizhub"
     }
   ]
 }
