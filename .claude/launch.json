@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lizhub",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/Users/elizabethwindsor/Documents/Claude_lizhub/server.js"],
+      "port": 3888
+    }
+  ]
+}

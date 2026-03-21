@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LizHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <div class="logo-mark">L</div>
+        <span class="logo-text">LizHub</span>
+      </div>
+      <div class="nav-links">
+        <a href="#tools" class="nav-link active">Tools</a>
+        <a href="#" class="nav-link disabled">Workflows</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Your tools,<br><span class="gradient-text">one place.</span></h1>
+      <p class="hero-subtitle">Build, research, and ship faster with your personal toolkit.</p>
+      <div class="search-wrapper">
+        <div class="search-bar">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search tools..." />
+          <kbd class="search-kbd">/</kbd>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools Grid -->
+  <section class="tools-section" id="tools">
+    <div class="tools-header">
+      <h2 class="section-title">Your Tools</h2>
+      <span class="tool-count">1 active</span>
+    </div>
+    <div class="tools-grid">
+
+      <!-- Idea Mine — Active -->
+      <a href="https://idea-mine-production.up.railway.app" target="_blank" class="tool-card" data-tool="ideamine">
+        <div class="tool-card-glow"></div>
+        <div class="tool-icon tool-icon-indigo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18h6"/>
+            <path d="M10 22h4"/>
+            <path d="M12 2a7 7 0 0 1 4 12.7V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.3A7 7 0 0 1 12 2z"/>
+          </svg>
+        </div>
+        <h3 class="tool-name">Idea Mine</h3>
+        <p class="tool-desc">Capture, research, and validate startup ideas with AI-powered analysis.</p>
+        <div class="tool-meta">
+          <span class="tool-badge tool-badge-live">Live</span>
+          <span class="tool-arrow">&rarr;</span>
+        </div>
+      </a>
+
+      <!-- Business Insights — Coming Soon -->
+      <div class="tool-card tool-card-soon" data-tool="insights">
+        <div class="tool-icon tool-icon-amber">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 20V10"/>
+            <path d="M12 20V4"/>
+            <path d="M6 20v-6"/>
+          </svg>
+        </div>
+        <h3 class="tool-name">Business Insights</h3>
+        <p class="tool-desc">Daily podcast breakdowns turned into actionable business intelligence.</p>
+        <div class="tool-meta">
+          <span class="tool-badge tool-badge-soon">Coming Soon</span>
+        </div>
+      </div>
+
+      <!-- Add Tool Placeholder -->
+      <div class="tool-card tool-card-add" id="addToolCard">
+        <div class="add-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <p class="add-text">Add a tool</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with focus &middot; LizHub</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
