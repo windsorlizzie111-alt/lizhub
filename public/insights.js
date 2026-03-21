@@ -90,8 +90,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     return `
       <div class="ln-card ${isGrid ? 'ln-grid-card' : 'ln-rail-card'}" data-id="${l.id}" data-cat="${l.category}">
         <span class="ln-card-company">${l.company}</span>
-        <p class="ln-card-lesson">${isGrid ? l.lesson : truncate(l.lesson, 140)}</p>
-        <p class="ln-card-remember">${isGrid ? l.rememberThis : truncate(l.rememberThis, 120)}</p>
+        <p class="ln-card-lesson">${l.lesson}</p>
+        <p class="ln-card-remember">${l.rememberThis}</p>
       </div>`;
   }
 
