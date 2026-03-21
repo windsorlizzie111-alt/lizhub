@@ -1209,3 +1209,212 @@ body {
     /* Entire card is clickable, no need for button on mobile */
   }
 }
+
+/* ══════════════════════════════════════════════
+   Business Insights — Standalone App Chrome
+   ══════════════════════════════════════════════ */
+
+.bi-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(10, 10, 11, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.bi-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bi-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.bi-logo-mark {
+  width: 28px;
+  height: 28px;
+  background: var(--amber);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+}
+
+.bi-logo-text {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.5px;
+}
+
+.bi-nav-tabs {
+  display: flex;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 3px;
+  border: 1px solid var(--border);
+}
+
+.bi-nav-tab {
+  padding: 6px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.bi-nav-tab:hover {
+  color: var(--text);
+}
+
+.bi-nav-tab-active {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Main content area */
+.bi-main {
+  padding-top: 56px;
+}
+
+.bi-tab-header {
+  padding: 48px 32px 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.bi-tab-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  margin-bottom: 6px;
+}
+
+.bi-tab-subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.bi-content-area {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 32px 80px;
+}
+
+/* Override learnings-filters for BI context */
+.bi-tab-content .learnings-filters {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 32px 20px;
+}
+
+/* BI Footer */
+.bi-footer {
+  text-align: center;
+  padding: 32px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.bi-footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition);
+}
+
+.bi-footer-link:hover {
+  color: var(--amber);
+}
+
+.bi-footer-sep {
+  opacity: 0.3;
+}
+
+.bi-footer-text {
+  color: var(--text-muted);
+}
+
+/* ══════════════════════════════════════════════
+   Responsive — BI App
+   ══════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .bi-nav-inner {
+    padding: 0 16px;
+  }
+
+  .bi-nav-tab {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .bi-tab-header {
+    padding: 36px 20px 20px;
+  }
+
+  .bi-tab-title {
+    font-size: 24px;
+  }
+
+  .bi-content-area {
+    padding: 0 20px 60px;
+  }
+
+  .bi-tab-content .learnings-filters {
+    padding: 0 20px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bi-footer {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .bi-footer-sep {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .bi-logo-text {
+    font-size: 14px;
+  }
+
+  .bi-nav-tabs {
+    gap: 0;
+    padding: 2px;
+  }
+
+  .bi-nav-tab {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .bi-tab-title {
+    font-size: 22px;
+  }
+}

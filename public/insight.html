@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loading... - LizHub</title>
+  <title>Loading... - Business Insights</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,24 +11,27 @@
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo" style="text-decoration:none;color:inherit">
-        <div class="logo-mark">L</div>
-        <span class="logo-text">LizHub</span>
+  <!-- BI Navigation -->
+  <nav class="bi-navbar">
+    <div class="bi-nav-inner">
+      <a href="/insights.html" class="bi-nav-logo">
+        <div class="bi-logo-mark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/>
+          </svg>
+        </div>
+        <span class="bi-logo-text">Business Insights</span>
       </a>
-      <div class="nav-links">
-        <a href="/" class="nav-link">Tools</a>
-        <a href="/insights.html" class="nav-link active">Episodes</a>
-        <a href="/learnings.html" class="nav-link">Learnings</a>
+      <div class="bi-nav-tabs">
+        <a href="/insights.html#learnings" class="bi-nav-tab">Learnings</a>
+        <a href="/insights.html#episodes" class="bi-nav-tab bi-nav-tab-active">Episodes</a>
       </div>
     </div>
   </nav>
 
   <!-- Reader -->
   <article class="insight-reader">
-    <a href="/insights.html" class="insight-back">&larr; All Episodes</a>
+    <a href="/insights.html#episodes" class="insight-back">&larr; All Episodes</a>
     <div id="insightMeta" class="insight-meta"></div>
     <div id="insightContent" class="insight-content">
       <div class="insights-loading">Loading breakdown...</div>
@@ -37,8 +40,10 @@
   </article>
 
   <!-- Footer -->
-  <footer class="footer">
-    <p>Built with focus &middot; LizHub</p>
+  <footer class="bi-footer">
+    <a href="/" class="bi-footer-link">&larr; Back to LizHub</a>
+    <span class="bi-footer-sep">&middot;</span>
+    <span class="bi-footer-text">Powered by The Best One Yet podcast</span>
   </footer>
 
   <script src="insight.js"></script>
