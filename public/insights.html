@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Insights - LizHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" style="text-decoration:none;color:inherit">
+        <div class="logo-mark">L</div>
+        <span class="logo-text">LizHub</span>
+      </a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Tools</a>
+        <a href="/insights.html" class="nav-link active">Insights</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <section class="insights-header">
+    <div class="insights-header-glow"></div>
+    <div class="insights-header-content">
+      <div class="insights-icon-wrap">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 20V10"/>
+          <path d="M12 20V4"/>
+          <path d="M6 20v-6"/>
+        </svg>
+      </div>
+      <h1 class="insights-title">Business Insights</h1>
+      <p class="insights-subtitle">Daily podcast breakdowns from The Best One Yet, turned into actionable business intelligence.</p>
+    </div>
+  </section>
+
+  <!-- Episodes List -->
+  <section class="insights-section">
+    <div id="insightsList" class="insights-list">
+      <div class="insights-loading">Loading episodes...</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with focus &middot; LizHub</p>
+  </footer>
+
+  <script src="insights.js"></script>
+</body>
+</html>

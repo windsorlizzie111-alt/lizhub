@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading... - LizHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" style="text-decoration:none;color:inherit">
+        <div class="logo-mark">L</div>
+        <span class="logo-text">LizHub</span>
+      </a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Tools</a>
+        <a href="/insights.html" class="nav-link active">Insights</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Reader -->
+  <article class="insight-reader">
+    <a href="/insights.html" class="insight-back">&larr; All Episodes</a>
+    <div id="insightMeta" class="insight-meta"></div>
+    <div id="insightContent" class="insight-content">
+      <div class="insights-loading">Loading breakdown...</div>
+    </div>
+    <nav id="insightNav" class="insight-nav"></nav>
+  </article>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with focus &middot; LizHub</p>
+  </footer>
+
+  <script src="insight.js"></script>
+</body>
+</html>
