@@ -27,24 +27,37 @@
 
   <!-- Dashboard — Rails View -->
   <main id="dashboard" class="bi-dashboard">
-    <div class="bi-dashboard-inner">
+    <div id="dashInner" class="bi-dashboard-inner">
       <div class="insights-loading">Loading insights...</div>
     </div>
   </main>
 
-  <!-- Grid View (hidden by default) -->
+  <!-- Grid View — See All -->
   <main id="grid-view" class="bi-grid-view" style="display:none">
     <div class="grid-header">
-      <button class="grid-back" id="gridBack">&larr; Back</button>
+      <button class="grid-back" id="gridBack">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
       <div class="grid-search-wrap">
-        <svg class="grid-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
+        <svg class="grid-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" class="grid-search" id="gridSearch" placeholder="Search..." />
       </div>
     </div>
     <h1 class="grid-title" id="gridTitle"></h1>
     <div class="grid-container" id="gridContainer"></div>
+  </main>
+
+  <!-- Detail View — Single Learning -->
+  <main id="detail-view" class="bi-detail-view" style="display:none">
+    <div class="detail-header">
+      <button class="grid-back" id="detailBack">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+    </div>
+    <article class="detail-content" id="detailContent"></article>
+    <div class="detail-nav" id="detailNav"></div>
   </main>
 
   <!-- Footer -->

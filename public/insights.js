@@ -1,23 +1,18 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const dashboardEl = document.getElementById('dashboard');
-  const dashInner = document.querySelector('.bi-dashboard-inner');
+  const dashInner = document.getElementById('dashInner');
   const gridViewEl = document.getElementById('grid-view');
   const gridTitle = document.getElementById('gridTitle');
   const gridContainer = document.getElementById('gridContainer');
   const gridSearch = document.getElementById('gridSearch');
   const gridBack = document.getElementById('gridBack');
+  const detailViewEl = document.getElementById('detail-view');
+  const detailContent = document.getElementById('detailContent');
+  const detailNav = document.getElementById('detailNav');
+  const detailBack = document.getElementById('detailBack');
 
   let allLearnings = [];
   let allEpisodes = [];
-
-  const categoryIcons = {
-    'Strategy & Positioning': '\u2693',
-    'Growth & Scaling': '\u2197',
-    'Building & Innovation': '\u2692',
-    'Customer & Brand': '\u2764',
-    'Career & Skills': '\u2b50',
-    'Risk & Resilience': '\u26a1'
-  };
 
   const categoryOrder = [
     'Strategy & Positioning',
@@ -28,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     'Risk & Resilience'
   ];
 
-  // --- Fetch data ---
+  // --- Fetch ---
   try {
     const [lRes, eRes] = await Promise.all([
       fetch('/api/learnings'),
@@ -42,221 +37,310 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // --- Helpers ---
-  function formatDate(dateStr) {
-    const d = new Date(dateStr + 'T12:00:00');
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  }
-
-  function formatDateFull(dateStr) {
+  function formatDateShort(dateStr) {
     const d = new Date(dateStr + 'T12:00:00');
     return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   }
 
-  function truncate(text, maxLen) {
-    if (text.length <= maxLen) return text;
-    return text.substring(0, maxLen).trim() + '...';
+  function truncate(text, n) {
+    return text.length <= n ? text : text.substring(0, n).trim() + '\u2026';
   }
 
-  // --- Episode card (rail + grid) ---
+  // --- Views ---
+  function showView(view) {
+    dashboardEl.style.display = view === 'dashboard' ? '' : 'none';
+    gridViewEl.style.display = view === 'grid' ? '' : 'none';
+    detailViewEl.style.display = view === 'detail' ? '' : 'none';
+    window.scrollTo(0, 0);
+  }
+
+  // ════════════════════════════════════════
+  // EPISODE CARD
+  // ════════════════════════════════════════
   function episodeCard(ep, isGrid) {
     const d = new Date(ep.date + 'T12:00:00');
-    const storyCount = ep.stories ? ep.stories.length : 3;
-    const cls = isGrid ? 'ep-card ep-grid-card' : 'ep-card ep-rail-card';
+    const stories = ep.stories || [];
     return `
-      <a href="/insight.html?slug=${ep.slug}" class="${cls}">
+      <a href="/insight.html?slug=${ep.slug}" class="ep-card ${isGrid ? 'ep-grid-card' : 'ep-rail-card'}">
         <div class="ep-card-date">
           <span class="ep-card-day">${d.getDate()}</span>
           <span class="ep-card-month">${d.toLocaleDateString('en-US', { month: 'short' })}</span>
         </div>
         <div class="ep-card-body">
           <h3 class="ep-card-title">${ep.title}</h3>
-          <p class="ep-card-meta">${formatDateFull(ep.date)} &middot; ${storyCount} stories</p>
-          ${ep.stories ? `<div class="ep-card-chips">${ep.stories.map(s => `<span class="ep-card-chip">${truncate(s, 30)}</span>`).join('')}</div>` : ''}
+          <p class="ep-card-meta">${formatDateShort(ep.date)} &middot; ${stories.length} stories</p>
         </div>
-      </a>
-    `;
+      </a>`;
   }
 
-  // --- Learning card (rail + grid) ---
-  function learningCard(l, isGrid) {
-    const cls = isGrid ? 'ln-card ln-grid-card' : 'ln-card ln-rail-card';
+  // ════════════════════════════════════════
+  // LEARNING CARD (no emojis, click → detail)
+  // ════════════════════════════════════════
+  function learningCard(l, isGrid, railItems) {
     return `
-      <div class="${cls}" data-id="${l.id}">
-        <div class="ln-card-top">
-          <span class="ln-card-icon">${categoryIcons[l.category] || ''}</span>
-          <span class="ln-card-company">${l.company}</span>
-        </div>
-        <p class="ln-card-lesson">${isGrid ? l.lesson : truncate(l.lesson, 100)}</p>
-        <p class="ln-card-remember">${isGrid ? l.rememberThis : truncate(l.rememberThis, 80)}</p>
-        <div class="ln-card-detail">
-          <div class="learning-detail-section">
-            <h4 class="learning-detail-label">The full lesson</h4>
-            <p>${l.detail}</p>
-          </div>
-          <div class="learning-detail-section">
-            <h4 class="learning-detail-label">How you could use this</h4>
-            <p>${l.useThis}</p>
-          </div>
-          <a href="/insight.html?slug=${l.episodeSlug}" class="learning-source">
-            Read full story: ${l.storyTitle} &rarr;
-          </a>
-        </div>
-      </div>
-    `;
+      <div class="ln-card ${isGrid ? 'ln-grid-card' : 'ln-rail-card'}" data-id="${l.id}" data-cat="${l.category}">
+        <span class="ln-card-company">${l.company}</span>
+        <p class="ln-card-lesson">${isGrid ? l.lesson : truncate(l.lesson, 90)}</p>
+        <p class="ln-card-remember">${truncate(l.rememberThis, 70)}</p>
+      </div>`;
   }
 
-  // --- Build a rail ---
-  function buildRail(title, icon, seeAllHash, cardsHtml) {
+  // ════════════════════════════════════════
+  // RAIL BUILDER (with chevrons)
+  // ════════════════════════════════════════
+  function buildRail(title, seeAllHash, cardsHtml) {
+    const id = 'rail-' + seeAllHash.replace(/[^a-zA-Z0-9]/g, '-');
     return `
       <section class="bi-rail">
         <div class="bi-rail-header">
-          <h2 class="bi-rail-title">${icon ? `<span class="rail-icon">${icon}</span> ` : ''}${title}</h2>
-          <a href="#${seeAllHash}" class="bi-rail-see-all" data-hash="${seeAllHash}">See All &rarr;</a>
+          <h2 class="bi-rail-title">${title}</h2>
+          <a href="#${seeAllHash}" class="bi-rail-see-all" data-hash="${seeAllHash}">See All</a>
         </div>
-        <div class="bi-rail-row">${cardsHtml}</div>
-      </section>
-    `;
+        <div class="bi-rail-track">
+          <button class="rail-chevron rail-chevron-left" data-rail="${id}" aria-label="Scroll left">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="bi-rail-row" id="${id}">${cardsHtml}</div>
+          <button class="rail-chevron rail-chevron-right" data-rail="${id}" aria-label="Scroll right">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+          </button>
+        </div>
+      </section>`;
   }
 
-  // --- Render Dashboard ---
+  // ════════════════════════════════════════
+  // DASHBOARD
+  // ════════════════════════════════════════
   function renderDashboard() {
     let html = '';
 
     // Episodes rail
-    const recentEps = allEpisodes.slice(0, 8);
-    html += buildRail('Latest Episodes', '', 'episodes',
-      recentEps.map(ep => episodeCard(ep, false)).join('')
+    html += buildRail('Latest Episodes', 'episodes',
+      allEpisodes.slice(0, 8).map(ep => episodeCard(ep, false)).join('')
     );
 
-    // Learning rails by category
+    // Category rails
     for (const cat of categoryOrder) {
       const items = allLearnings.filter(l => l.category === cat);
       if (!items.length) continue;
-      html += buildRail(cat, categoryIcons[cat], `cat:${cat}`,
-        items.map(l => learningCard(l, false)).join('')
+      html += buildRail(cat, `cat:${cat}`,
+        items.map(l => learningCard(l, false, items)).join('')
       );
     }
 
     dashInner.innerHTML = html;
 
-    // Attach see-all clicks
-    dashInner.querySelectorAll('.bi-rail-see-all').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const hash = link.dataset.hash;
-        window.location.hash = hash;
+    // Chevron scroll
+    dashInner.querySelectorAll('.rail-chevron').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const row = document.getElementById(btn.dataset.rail);
+        const dir = btn.classList.contains('rail-chevron-left') ? -1 : 1;
+        row.scrollBy({ left: dir * 320, behavior: 'smooth' });
       });
     });
 
-    // Attach learning card expand
-    attachLearningExpand(dashInner);
+    // Update chevron visibility on scroll
+    dashInner.querySelectorAll('.bi-rail-row').forEach(row => {
+      const updateChevrons = () => {
+        const track = row.closest('.bi-rail-track');
+        const leftBtn = track.querySelector('.rail-chevron-left');
+        const rightBtn = track.querySelector('.rail-chevron-right');
+        leftBtn.style.opacity = row.scrollLeft > 10 ? '1' : '0';
+        leftBtn.style.pointerEvents = row.scrollLeft > 10 ? 'auto' : 'none';
+        rightBtn.style.opacity = (row.scrollLeft + row.clientWidth < row.scrollWidth - 10) ? '1' : '0';
+        rightBtn.style.pointerEvents = (row.scrollLeft + row.clientWidth < row.scrollWidth - 10) ? 'auto' : 'none';
+      };
+      row.addEventListener('scroll', updateChevrons);
+      setTimeout(updateChevrons, 100);
+    });
+
+    // See all links
+    dashInner.querySelectorAll('.bi-rail-see-all').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.hash = link.dataset.hash;
+      });
+    });
+
+    // Learning card clicks → detail
+    attachCardClicks(dashInner);
   }
 
-  // --- Grid View ---
+  // ════════════════════════════════════════
+  // GRID VIEW
+  // ════════════════════════════════════════
   let currentGridType = null;
   let currentGridCategory = null;
-  let currentGridItems = [];
 
   function showGridView(type, category) {
     currentGridType = type;
     currentGridCategory = category;
-    dashboardEl.style.display = 'none';
-    gridViewEl.style.display = '';
+    showView('grid');
     gridSearch.value = '';
 
     if (type === 'episodes') {
       gridTitle.textContent = 'All Episodes';
-      currentGridItems = allEpisodes;
-      renderGridEpisodes(allEpisodes);
+      renderGridItems(allEpisodes, 'episodes');
     } else {
       gridTitle.textContent = category;
-      currentGridItems = allLearnings.filter(l => l.category === category);
-      renderGridLearnings(currentGridItems);
+      renderGridItems(allLearnings.filter(l => l.category === category), 'learnings');
     }
-
-    window.scrollTo(0, 0);
   }
 
-  function renderGridEpisodes(items) {
-    gridContainer.innerHTML = items.map(ep => episodeCard(ep, true)).join('');
+  function renderGridItems(items, type) {
+    if (type === 'episodes') {
+      gridContainer.innerHTML = items.map(ep => episodeCard(ep, true)).join('');
+    } else {
+      gridContainer.innerHTML = items.map(l => learningCard(l, true)).join('');
+      attachCardClicks(gridContainer);
+    }
   }
 
-  function renderGridLearnings(items) {
-    gridContainer.innerHTML = items.map(l => learningCard(l, true)).join('');
-    attachLearningExpand(gridContainer);
-  }
-
-  function showDashboard() {
-    gridViewEl.style.display = 'none';
-    dashboardEl.style.display = '';
-    window.location.hash = '';
-    window.scrollTo(0, 0);
-  }
-
-  // Search
   gridSearch.addEventListener('input', () => {
     const q = gridSearch.value.toLowerCase().trim();
     if (currentGridType === 'episodes') {
-      const filtered = allEpisodes.filter(ep =>
+      const f = allEpisodes.filter(ep =>
         ep.title.toLowerCase().includes(q) ||
-        (ep.stories || []).some(s => s.toLowerCase().includes(q)) ||
-        ep.date.includes(q)
+        (ep.stories || []).some(s => s.toLowerCase().includes(q))
       );
-      renderGridEpisodes(filtered);
+      renderGridItems(f, 'episodes');
     } else {
       const base = allLearnings.filter(l => l.category === currentGridCategory);
-      const filtered = base.filter(l =>
+      const f = base.filter(l =>
         l.lesson.toLowerCase().includes(q) ||
         l.company.toLowerCase().includes(q) ||
-        l.rememberThis.toLowerCase().includes(q) ||
-        l.storyTitle.toLowerCase().includes(q)
+        l.rememberThis.toLowerCase().includes(q)
       );
-      renderGridLearnings(filtered);
+      renderGridItems(f, 'learnings');
     }
   });
 
-  // Back button
-  gridBack.addEventListener('click', showDashboard);
+  gridBack.addEventListener('click', () => {
+    window.location.hash = '';
+  });
 
-  // --- Learning card expand/collapse ---
-  function attachLearningExpand(container) {
-    container.querySelectorAll('.ln-card').forEach(card => {
-      // Remove existing listeners by cloning
-      const top = card.querySelector('.ln-card-top, .ln-card-lesson, .ln-card-remember');
-      card.addEventListener('click', (e) => {
-        // Don't toggle if clicking a link inside detail
-        if (e.target.closest('.ln-card-detail a')) return;
-        if (e.target.closest('.ln-card-detail')) return;
-        card.classList.toggle('ln-card-open');
+  // ════════════════════════════════════════
+  // DETAIL VIEW (single learning)
+  // ════════════════════════════════════════
+  let detailRailItems = [];
+  let detailIndex = 0;
+
+  function showDetail(learningId) {
+    const learning = allLearnings.find(l => l.id === learningId);
+    if (!learning) return;
+
+    // Build the rail this card belongs to
+    detailRailItems = allLearnings.filter(l => l.category === learning.category);
+    detailIndex = detailRailItems.findIndex(l => l.id === learningId);
+
+    renderDetail(learning);
+    showView('detail');
+    window.location.hash = `detail:${learningId}`;
+  }
+
+  function renderDetail(l) {
+    detailContent.innerHTML = `
+      <div class="detail-category">${l.category}</div>
+      <h1 class="detail-title">${l.lesson}</h1>
+      <p class="detail-remember">${l.rememberThis}</p>
+      <div class="detail-divider"></div>
+      <div class="detail-section">
+        <h3 class="detail-label">The Full Lesson</h3>
+        <p class="detail-text">${l.detail}</p>
+      </div>
+      <div class="detail-section">
+        <h3 class="detail-label">How You Could Use This</h3>
+        <p class="detail-text">${l.useThis}</p>
+      </div>
+      <div class="detail-divider"></div>
+      <div class="detail-meta">
+        <span class="detail-meta-company">${l.company}</span>
+        <span class="detail-meta-sep">&middot;</span>
+        <a href="/insight.html?slug=${l.episodeSlug}" class="detail-meta-link">From "${l.episodeTitle}" &rarr;</a>
+      </div>
+    `;
+
+    // Prev / Next nav
+    const prev = detailIndex > 0 ? detailRailItems[detailIndex - 1] : null;
+    const next = detailIndex < detailRailItems.length - 1 ? detailRailItems[detailIndex + 1] : null;
+
+    detailNav.innerHTML = `
+      <div class="detail-nav-inner">
+        ${prev ? `<button class="detail-nav-btn detail-nav-prev" data-id="${prev.id}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <div class="detail-nav-label">
+            <span class="detail-nav-dir">Previous</span>
+            <span class="detail-nav-preview">${truncate(prev.lesson, 50)}</span>
+          </div>
+        </button>` : '<div></div>'}
+        ${next ? `<button class="detail-nav-btn detail-nav-next" data-id="${next.id}">
+          <div class="detail-nav-label" style="text-align:right">
+            <span class="detail-nav-dir">Next</span>
+            <span class="detail-nav-preview">${truncate(next.lesson, 50)}</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>` : '<div></div>'}
+      </div>
+    `;
+
+    detailNav.querySelectorAll('.detail-nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const l = allLearnings.find(x => x.id === id);
+        if (!l) return;
+        detailIndex = detailRailItems.findIndex(x => x.id === id);
+        renderDetail(l);
+        window.scrollTo(0, 0);
+        history.replaceState(null, '', `#detail:${id}`);
       });
     });
   }
 
-  // --- Hash Routing ---
+  detailBack.addEventListener('click', () => {
+    if (detailRailItems.length > 0) {
+      const cat = detailRailItems[0].category;
+      window.location.hash = `cat:${cat}`;
+    } else {
+      window.location.hash = '';
+    }
+  });
+
+  // ════════════════════════════════════════
+  // CARD CLICK → DETAIL
+  // ════════════════════════════════════════
+  function attachCardClicks(container) {
+    container.querySelectorAll('.ln-card').forEach(card => {
+      card.addEventListener('click', () => {
+        showDetail(card.dataset.id);
+      });
+    });
+  }
+
+  // ════════════════════════════════════════
+  // HASH ROUTING
+  // ════════════════════════════════════════
   function handleHash() {
     const hash = decodeURIComponent(window.location.hash.replace('#', ''));
     if (!hash) {
-      showDashboard();
+      showView('dashboard');
       return;
     }
     if (hash === 'episodes') {
       showGridView('episodes');
     } else if (hash.startsWith('cat:')) {
-      const cat = hash.substring(4);
-      showGridView('learnings', cat);
+      showGridView('learnings', hash.substring(4));
+    } else if (hash.startsWith('detail:')) {
+      showDetail(hash.substring(7));
     } else {
-      showDashboard();
+      showView('dashboard');
     }
   }
 
   window.addEventListener('hashchange', handleHash);
 
-  // --- Init ---
+  // ════════════════════════════════════════
+  // INIT
+  // ════════════════════════════════════════
   renderDashboard();
-
-  // Check initial hash
-  const initHash = window.location.hash.replace('#', '');
-  if (initHash) {
-    handleHash();
-  }
+  if (window.location.hash) handleHash();
 });
