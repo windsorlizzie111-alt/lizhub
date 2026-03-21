@@ -49,6 +49,18 @@ app.get('/api/insights/:slug', (req, res) => {
   }
 });
 
+// API: list all learnings
+app.get('/api/learnings', (req, res) => {
+  try {
+    const learnings = JSON.parse(fs.readFileSync(path.join(INSIGHTS_DIR, 'learnings.json'), 'utf-8'));
+    const category = req.query.category;
+    const filtered = category ? learnings.filter(l => l.category === category) : learnings;
+    res.json(filtered);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not load learnings' });
+  }
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, () => {
