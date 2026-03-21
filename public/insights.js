@@ -1,45 +1,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  // --- Tab switching ---
-  const tabs = document.querySelectorAll('.bi-nav-tab');
-  const tabLearnings = document.getElementById('tab-learnings');
-  const tabEpisodes = document.getElementById('tab-episodes');
+  const dashboardEl = document.getElementById('dashboard');
+  const dashInner = document.querySelector('.bi-dashboard-inner');
+  const gridViewEl = document.getElementById('grid-view');
+  const gridTitle = document.getElementById('gridTitle');
+  const gridContainer = document.getElementById('gridContainer');
+  const gridSearch = document.getElementById('gridSearch');
+  const gridBack = document.getElementById('gridBack');
 
-  function switchTab(tabName) {
-    tabs.forEach(t => t.classList.toggle('bi-nav-tab-active', t.dataset.tab === tabName));
-    tabLearnings.style.display = tabName === 'learnings' ? '' : 'none';
-    tabEpisodes.style.display = tabName === 'episodes' ? '' : 'none';
-    window.location.hash = tabName;
-  }
-
-  tabs.forEach(t => t.addEventListener('click', (e) => {
-    e.preventDefault();
-    switchTab(t.dataset.tab);
-  }));
-
-  // Default tab from hash or learnings
-  const hash = window.location.hash.replace('#', '');
-  switchTab(hash === 'episodes' ? 'episodes' : 'learnings');
-
-  // Handle back/forward
-  window.addEventListener('hashchange', () => {
-    const h = window.location.hash.replace('#', '');
-    switchTab(h === 'episodes' ? 'episodes' : 'learnings');
-  });
-
-  // --- Fetch data ---
-  const [learningsRes, episodesRes] = await Promise.all([
-    fetch('/api/learnings'),
-    fetch('/api/insights')
-  ]);
-
-  const allLearnings = await learningsRes.json();
-  const allEpisodes = await episodesRes.json();
-
-  // --- Learnings ---
-  const chipsEl = document.getElementById('filterChips');
-  const learningsListEl = document.getElementById('learningsList');
-  const countEl = document.getElementById('learningsCount');
-  let activeCategory = 'All';
+  let allLearnings = [];
+  let allEpisodes = [];
 
   const categoryIcons = {
     'Strategy & Positioning': '\u2693',
@@ -58,133 +27,236 @@ document.addEventListener('DOMContentLoaded', async () => {
     'Career & Skills',
     'Risk & Resilience'
   ];
-  const categories = categoryOrder.filter(c => allLearnings.some(l => l.category === c));
 
-  function renderChips() {
-    const allChip = `<button class="filter-chip ${activeCategory === 'All' ? 'filter-chip-active' : ''}" data-cat="All">All</button>`;
-    const catChips = categories.map(c =>
-      `<button class="filter-chip ${activeCategory === c ? 'filter-chip-active' : ''}" data-cat="${c}">
-        <span class="chip-icon">${categoryIcons[c] || ''}</span> ${c}
-      </button>`
-    ).join('');
-    chipsEl.innerHTML = allChip + catChips;
+  // --- Fetch data ---
+  try {
+    const [lRes, eRes] = await Promise.all([
+      fetch('/api/learnings'),
+      fetch('/api/insights')
+    ]);
+    allLearnings = await lRes.json();
+    allEpisodes = await eRes.json();
+  } catch (err) {
+    dashInner.innerHTML = '<div class="insights-empty">Failed to load data.</div>';
+    return;
+  }
 
-    chipsEl.querySelectorAll('.filter-chip').forEach(btn => {
-      btn.addEventListener('click', () => {
-        activeCategory = btn.dataset.cat;
-        renderChips();
-        renderLearnings();
+  // --- Helpers ---
+  function formatDate(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+
+  function formatDateFull(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  }
+
+  function truncate(text, maxLen) {
+    if (text.length <= maxLen) return text;
+    return text.substring(0, maxLen).trim() + '...';
+  }
+
+  // --- Episode card (rail + grid) ---
+  function episodeCard(ep, isGrid) {
+    const d = new Date(ep.date + 'T12:00:00');
+    const storyCount = ep.stories ? ep.stories.length : 3;
+    const cls = isGrid ? 'ep-card ep-grid-card' : 'ep-card ep-rail-card';
+    return `
+      <a href="/insight.html?slug=${ep.slug}" class="${cls}">
+        <div class="ep-card-date">
+          <span class="ep-card-day">${d.getDate()}</span>
+          <span class="ep-card-month">${d.toLocaleDateString('en-US', { month: 'short' })}</span>
+        </div>
+        <div class="ep-card-body">
+          <h3 class="ep-card-title">${ep.title}</h3>
+          <p class="ep-card-meta">${formatDateFull(ep.date)} &middot; ${storyCount} stories</p>
+          ${ep.stories ? `<div class="ep-card-chips">${ep.stories.map(s => `<span class="ep-card-chip">${truncate(s, 30)}</span>`).join('')}</div>` : ''}
+        </div>
+      </a>
+    `;
+  }
+
+  // --- Learning card (rail + grid) ---
+  function learningCard(l, isGrid) {
+    const cls = isGrid ? 'ln-card ln-grid-card' : 'ln-card ln-rail-card';
+    return `
+      <div class="${cls}" data-id="${l.id}">
+        <div class="ln-card-top">
+          <span class="ln-card-icon">${categoryIcons[l.category] || ''}</span>
+          <span class="ln-card-company">${l.company}</span>
+        </div>
+        <p class="ln-card-lesson">${isGrid ? l.lesson : truncate(l.lesson, 100)}</p>
+        <p class="ln-card-remember">${isGrid ? l.rememberThis : truncate(l.rememberThis, 80)}</p>
+        <div class="ln-card-detail">
+          <div class="learning-detail-section">
+            <h4 class="learning-detail-label">The full lesson</h4>
+            <p>${l.detail}</p>
+          </div>
+          <div class="learning-detail-section">
+            <h4 class="learning-detail-label">How you could use this</h4>
+            <p>${l.useThis}</p>
+          </div>
+          <a href="/insight.html?slug=${l.episodeSlug}" class="learning-source">
+            Read full story: ${l.storyTitle} &rarr;
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
+  // --- Build a rail ---
+  function buildRail(title, icon, seeAllHash, cardsHtml) {
+    return `
+      <section class="bi-rail">
+        <div class="bi-rail-header">
+          <h2 class="bi-rail-title">${icon ? `<span class="rail-icon">${icon}</span> ` : ''}${title}</h2>
+          <a href="#${seeAllHash}" class="bi-rail-see-all" data-hash="${seeAllHash}">See All &rarr;</a>
+        </div>
+        <div class="bi-rail-row">${cardsHtml}</div>
+      </section>
+    `;
+  }
+
+  // --- Render Dashboard ---
+  function renderDashboard() {
+    let html = '';
+
+    // Episodes rail
+    const recentEps = allEpisodes.slice(0, 8);
+    html += buildRail('Latest Episodes', '', 'episodes',
+      recentEps.map(ep => episodeCard(ep, false)).join('')
+    );
+
+    // Learning rails by category
+    for (const cat of categoryOrder) {
+      const items = allLearnings.filter(l => l.category === cat);
+      if (!items.length) continue;
+      html += buildRail(cat, categoryIcons[cat], `cat:${cat}`,
+        items.map(l => learningCard(l, false)).join('')
+      );
+    }
+
+    dashInner.innerHTML = html;
+
+    // Attach see-all clicks
+    dashInner.querySelectorAll('.bi-rail-see-all').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const hash = link.dataset.hash;
+        window.location.hash = hash;
+      });
+    });
+
+    // Attach learning card expand
+    attachLearningExpand(dashInner);
+  }
+
+  // --- Grid View ---
+  let currentGridType = null;
+  let currentGridCategory = null;
+  let currentGridItems = [];
+
+  function showGridView(type, category) {
+    currentGridType = type;
+    currentGridCategory = category;
+    dashboardEl.style.display = 'none';
+    gridViewEl.style.display = '';
+    gridSearch.value = '';
+
+    if (type === 'episodes') {
+      gridTitle.textContent = 'All Episodes';
+      currentGridItems = allEpisodes;
+      renderGridEpisodes(allEpisodes);
+    } else {
+      gridTitle.textContent = category;
+      currentGridItems = allLearnings.filter(l => l.category === category);
+      renderGridLearnings(currentGridItems);
+    }
+
+    window.scrollTo(0, 0);
+  }
+
+  function renderGridEpisodes(items) {
+    gridContainer.innerHTML = items.map(ep => episodeCard(ep, true)).join('');
+  }
+
+  function renderGridLearnings(items) {
+    gridContainer.innerHTML = items.map(l => learningCard(l, true)).join('');
+    attachLearningExpand(gridContainer);
+  }
+
+  function showDashboard() {
+    gridViewEl.style.display = 'none';
+    dashboardEl.style.display = '';
+    window.location.hash = '';
+    window.scrollTo(0, 0);
+  }
+
+  // Search
+  gridSearch.addEventListener('input', () => {
+    const q = gridSearch.value.toLowerCase().trim();
+    if (currentGridType === 'episodes') {
+      const filtered = allEpisodes.filter(ep =>
+        ep.title.toLowerCase().includes(q) ||
+        (ep.stories || []).some(s => s.toLowerCase().includes(q)) ||
+        ep.date.includes(q)
+      );
+      renderGridEpisodes(filtered);
+    } else {
+      const base = allLearnings.filter(l => l.category === currentGridCategory);
+      const filtered = base.filter(l =>
+        l.lesson.toLowerCase().includes(q) ||
+        l.company.toLowerCase().includes(q) ||
+        l.rememberThis.toLowerCase().includes(q) ||
+        l.storyTitle.toLowerCase().includes(q)
+      );
+      renderGridLearnings(filtered);
+    }
+  });
+
+  // Back button
+  gridBack.addEventListener('click', showDashboard);
+
+  // --- Learning card expand/collapse ---
+  function attachLearningExpand(container) {
+    container.querySelectorAll('.ln-card').forEach(card => {
+      // Remove existing listeners by cloning
+      const top = card.querySelector('.ln-card-top, .ln-card-lesson, .ln-card-remember');
+      card.addEventListener('click', (e) => {
+        // Don't toggle if clicking a link inside detail
+        if (e.target.closest('.ln-card-detail a')) return;
+        if (e.target.closest('.ln-card-detail')) return;
+        card.classList.toggle('ln-card-open');
       });
     });
   }
 
-  function renderLearnings() {
-    const filtered = activeCategory === 'All'
-      ? allLearnings
-      : allLearnings.filter(l => l.category === activeCategory);
-
-    countEl.textContent = `${filtered.length} lesson${filtered.length !== 1 ? 's' : ''}`;
-
-    if (!filtered.length) {
-      learningsListEl.innerHTML = '<div class="insights-empty">No learnings in this category.</div>';
+  // --- Hash Routing ---
+  function handleHash() {
+    const hash = decodeURIComponent(window.location.hash.replace('#', ''));
+    if (!hash) {
+      showDashboard();
       return;
     }
-
-    const grouped = {};
-    for (const l of filtered) {
-      if (!grouped[l.category]) grouped[l.category] = [];
-      grouped[l.category].push(l);
+    if (hash === 'episodes') {
+      showGridView('episodes');
+    } else if (hash.startsWith('cat:')) {
+      const cat = hash.substring(4);
+      showGridView('learnings', cat);
+    } else {
+      showDashboard();
     }
-
-    let html = '';
-    for (const cat of categoryOrder) {
-      if (!grouped[cat]) continue;
-      html += `<div class="learning-group">
-        <h2 class="learning-group-title"><span class="group-icon">${categoryIcons[cat] || ''}</span> ${cat}</h2>
-        <div class="learning-group-items">`;
-
-      for (const l of grouped[cat]) {
-        const date = new Date(l.episodeSlug + 'T12:00:00');
-        const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-        html += `
-          <div class="learning-card" data-id="${l.id}">
-            <div class="learning-card-main">
-              <div class="learning-card-content">
-                <p class="learning-lesson">${l.lesson}</p>
-                <p class="learning-remember">${l.rememberThis}</p>
-                <div class="learning-meta">
-                  <span class="learning-company">${l.company}</span>
-                  <span class="learning-dot">&middot;</span>
-                  <span class="learning-date">${formatted}</span>
-                </div>
-              </div>
-              <button class="learning-expand" aria-label="Expand">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"/>
-                </svg>
-              </button>
-            </div>
-            <div class="learning-card-detail">
-              <div class="learning-detail-section">
-                <h4 class="learning-detail-label">The full lesson</h4>
-                <p>${l.detail}</p>
-              </div>
-              <div class="learning-detail-section">
-                <h4 class="learning-detail-label">How you could use this</h4>
-                <p>${l.useThis}</p>
-              </div>
-              <a href="/insight.html?slug=${l.episodeSlug}" class="learning-source">
-                Read full story: ${l.storyTitle} &rarr;
-              </a>
-            </div>
-          </div>
-        `;
-      }
-
-      html += '</div></div>';
-    }
-
-    learningsListEl.innerHTML = html;
-
-    learningsListEl.querySelectorAll('.learning-card').forEach(card => {
-      const mainEl = card.querySelector('.learning-card-main');
-      mainEl.addEventListener('click', () => {
-        card.classList.toggle('learning-card-open');
-      });
-    });
   }
 
-  renderChips();
-  renderLearnings();
+  window.addEventListener('hashchange', handleHash);
 
-  // --- Episodes ---
-  const episodesListEl = document.getElementById('insightsList');
+  // --- Init ---
+  renderDashboard();
 
-  if (!allEpisodes.length) {
-    episodesListEl.innerHTML = '<div class="insights-empty">No episodes yet.</div>';
-  } else {
-    episodesListEl.innerHTML = allEpisodes.map(ep => {
-      const date = new Date(ep.date + 'T12:00:00');
-      const formatted = date.toLocaleDateString('en-US', {
-        weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
-      });
-      const storyCount = ep.stories ? ep.stories.length : 3;
-
-      return `
-        <a href="/insight.html?slug=${ep.slug}" class="insight-card">
-          <div class="insight-card-date">
-            <span class="insight-card-day">${date.getDate()}</span>
-            <span class="insight-card-month">${date.toLocaleDateString('en-US', { month: 'short' })}</span>
-          </div>
-          <div class="insight-card-body">
-            <h3 class="insight-card-title">${ep.title}</h3>
-            <p class="insight-card-meta">${formatted} &middot; ${storyCount} stories</p>
-            ${ep.stories ? `<div class="insight-card-stories">${ep.stories.map(s => `<span class="insight-card-story">${s}</span>`).join('')}</div>` : ''}
-          </div>
-          <span class="insight-card-arrow">&rarr;</span>
-        </a>
-      `;
-    }).join('');
+  // Check initial hash
+  const initHash = window.location.hash.replace('#', '');
+  if (initHash) {
+    handleHash();
   }
 });

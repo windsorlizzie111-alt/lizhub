@@ -22,46 +22,29 @@
         </div>
         <span class="bi-logo-text">Business Insights</span>
       </a>
-      <div class="bi-nav-tabs">
-        <a href="#learnings" class="bi-nav-tab" data-tab="learnings">Learnings</a>
-        <a href="#episodes" class="bi-nav-tab" data-tab="episodes">Episodes</a>
-      </div>
     </div>
   </nav>
 
-  <!-- Tabs Content -->
-  <main class="bi-main">
+  <!-- Dashboard — Rails View -->
+  <main id="dashboard" class="bi-dashboard">
+    <div class="bi-dashboard-inner">
+      <div class="insights-loading">Loading insights...</div>
+    </div>
+  </main>
 
-    <!-- Learnings Tab -->
-    <section id="tab-learnings" class="bi-tab-content">
-      <div class="bi-tab-header">
-        <h1 class="bi-tab-title">Learnings</h1>
-        <p class="bi-tab-subtitle">Every business lesson extracted and organized by theme.</p>
+  <!-- Grid View (hidden by default) -->
+  <main id="grid-view" class="bi-grid-view" style="display:none">
+    <div class="grid-header">
+      <button class="grid-back" id="gridBack">&larr; Back</button>
+      <div class="grid-search-wrap">
+        <svg class="grid-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" class="grid-search" id="gridSearch" placeholder="Search..." />
       </div>
-      <div class="learnings-filters">
-        <div class="filter-chips" id="filterChips"></div>
-        <div class="learnings-count" id="learningsCount"></div>
-      </div>
-      <div class="bi-content-area">
-        <div id="learningsList" class="learnings-list">
-          <div class="insights-loading">Loading learnings...</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Episodes Tab -->
-    <section id="tab-episodes" class="bi-tab-content" style="display:none">
-      <div class="bi-tab-header">
-        <h1 class="bi-tab-title">Episodes</h1>
-        <p class="bi-tab-subtitle">Daily podcast breakdowns from The Best One Yet.</p>
-      </div>
-      <div class="bi-content-area">
-        <div id="insightsList" class="insights-list">
-          <div class="insights-loading">Loading episodes...</div>
-        </div>
-      </div>
-    </section>
-
+    </div>
+    <h1 class="grid-title" id="gridTitle"></h1>
+    <div class="grid-container" id="gridContainer"></div>
   </main>
 
   <!-- Footer -->
