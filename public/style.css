@@ -1228,7 +1228,7 @@ body {
 }
 
 .bi-nav-inner {
-  padding: 0 36px;
+  padding: 0 48px;
   height: 56px;
   display: flex;
   align-items: center;
@@ -1279,7 +1279,7 @@ body {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 0 36px 12px;
+  padding: 0 48px 12px;
 }
 
 .bi-rail-title {
@@ -1344,7 +1344,7 @@ body {
 .bi-rail-row {
   display: flex;
   gap: 14px;
-  padding: 4px 36px;
+  padding: 4px 48px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
@@ -1379,7 +1379,7 @@ body {
 }
 
 .ep-rail-card {
-  width: 300px;
+  width: 420px;
 }
 
 .ep-grid-card {
@@ -1439,13 +1439,12 @@ body {
   background: rgba(255,255,255,0.035);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 20px;
+  padding: 22px 24px;
   cursor: pointer;
   transition: all var(--transition);
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .ln-card:hover {
@@ -1454,11 +1453,13 @@ body {
 }
 
 .ln-rail-card {
-  width: 340px;
+  width: 420px;
+  height: 200px;
 }
 
 .ln-grid-card {
   width: auto;
+  height: 200px;
 }
 
 .ln-card-company {
@@ -1468,6 +1469,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.8px;
   margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 .ln-card-lesson {
@@ -1476,6 +1478,11 @@ body {
   line-height: 1.5;
   margin-bottom: 12px;
   color: var(--text);
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 }
 
 .ln-card-remember {
@@ -1483,6 +1490,11 @@ body {
   color: var(--text-secondary);
   font-style: italic;
   line-height: 1.5;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 /* ── Grid View ── */
@@ -1495,7 +1507,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 28px 36px 0;
+  padding: 28px 48px 0;
   gap: 16px;
 }
 
@@ -1561,14 +1573,14 @@ body {
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.8px;
-  padding: 20px 36px 24px;
+  padding: 20px 48px 24px;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 14px;
-  padding: 0 36px 60px;
+  padding: 0 48px 60px;
 }
 
 /* ── Detail View ── */
@@ -1578,13 +1590,13 @@ body {
 }
 
 .detail-header {
-  padding: 28px 36px 0;
+  padding: 28px 48px 0;
 }
 
 .detail-content {
   max-width: 720px;
   margin: 0 auto;
-  padding: 36px 36px 0;
+  padding: 36px 48px 0;
 }
 
 .detail-category {
@@ -1674,7 +1686,7 @@ body {
 .detail-nav-inner {
   max-width: 720px;
   margin: 0 auto;
-  padding: 24px 36px;
+  padding: 24px 48px;
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -1730,7 +1742,7 @@ body {
 /* BI Footer */
 .bi-footer {
   text-align: center;
-  padding: 32px 36px;
+  padding: 32px 48px;
   border-top: 1px solid var(--border);
   font-size: 13px;
   color: var(--text-muted);
