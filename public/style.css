@@ -1266,6 +1266,8 @@ body {
 }
 
 .bi-dashboard-inner {
+  max-width: 1400px;
+  margin: 0 auto;
   padding: 0 0 40px;
 }
 
@@ -1279,7 +1281,7 @@ body {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 0 48px 12px;
+  padding: 0 56px 12px;
 }
 
 .bi-rail-title {
@@ -1291,14 +1293,14 @@ body {
 
 .bi-rail-see-all {
   font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-weight: 600;
+  color: var(--amber);
   text-decoration: none;
   transition: color var(--transition);
 }
 
 .bi-rail-see-all:hover {
-  color: var(--amber);
+  color: #fbbf24;
 }
 
 /* Rail track with chevrons */
@@ -1344,7 +1346,7 @@ body {
 .bi-rail-row {
   display: flex;
   gap: 14px;
-  padding: 4px 48px;
+  padding: 4px 56px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
@@ -1379,8 +1381,8 @@ body {
 }
 
 .ep-rail-card {
-  width: calc(50vw - 62px);
-  max-width: 660px;
+  width: calc(38vw - 48px);
+  max-width: 480px;
 }
 
 .ep-grid-card {
@@ -1454,8 +1456,8 @@ body {
 }
 
 .ln-rail-card {
-  width: calc(50vw - 62px);
-  max-width: 660px;
+  width: calc(38vw - 48px);
+  max-width: 480px;
   height: 220px;
 }
 
