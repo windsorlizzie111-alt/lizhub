@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3888;
 
 const INSIGHTS_DIR = path.join(__dirname, 'data', 'insights');
 const MANIFEST_PATH = path.join(INSIGHTS_DIR, 'manifest.json');
+const NOTIFICATIONS_PATH = path.join(__dirname, 'data', 'notifications.json');
 
 // API: list all insights
 app.get('/api/insights', (req, res) => {
@@ -58,6 +59,44 @@ app.get('/api/learnings', (req, res) => {
     res.json(filtered);
   } catch (err) {
     res.status(500).json({ error: 'Could not load learnings' });
+  }
+});
+
+// API: list notifications (newest first)
+app.get('/api/notifications', (req, res) => {
+  try {
+    const notifications = JSON.parse(fs.readFileSync(NOTIFICATIONS_PATH, 'utf-8'));
+    notifications.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+    const limit = parseInt(req.query.limit) || 50;
+    res.json(notifications.slice(0, limit));
+  } catch (err) {
+    res.status(500).json({ error: 'Could not load notifications' });
+  }
+});
+
+// API: mark notification as read
+app.patch('/api/notifications/:id/read', (req, res) => {
+  try {
+    const notifications = JSON.parse(fs.readFileSync(NOTIFICATIONS_PATH, 'utf-8'));
+    const notif = notifications.find(n => n.id === req.params.id);
+    if (!notif) return res.status(404).json({ error: 'Not found' });
+    notif.read = true;
+    fs.writeFileSync(NOTIFICATIONS_PATH, JSON.stringify(notifications, null, 2));
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Could not update notification' });
+  }
+});
+
+// API: mark all notifications as read
+app.patch('/api/notifications/read-all', (req, res) => {
+  try {
+    const notifications = JSON.parse(fs.readFileSync(NOTIFICATIONS_PATH, 'utf-8'));
+    notifications.forEach(n => n.read = true);
+    fs.writeFileSync(NOTIFICATIONS_PATH, JSON.stringify(notifications, null, 2));
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Could not update notifications' });
   }
 });
 
