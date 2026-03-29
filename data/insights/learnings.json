@@ -478,5 +478,113 @@
     "episodeSlug": "2026-03-20",
     "episodeTitle": "RIP META",
     "storyTitle": "The 4-Day Week Nobody Chose"
+  },
+  {
+    "id": "2026-03-23-1",
+    "category": "Strategy & Positioning",
+    "lesson": "Asymmetric expertise is a goldmine — when one side of a transaction knows way more than the other, there's a business in being the translator.",
+    "detail": "Tomi Mikula spent a decade selling cars, then flipped his insider knowledge into a $2.4M/year service negotiating prices for buyers. He didn't build technology or raise VC money — he packaged a skill gap into a flat-fee service. Car buying is the second-biggest purchase most people make, and the information asymmetry between dealers and buyers is enormous.",
+    "useThis": "Look at industries where consumers feel outmatched — medical billing, home repairs, insurance claims, real estate. If you've worked inside one of these industries, package that knowledge as a service. Start small, build a track record, and let content creation be your marketing.",
+    "rememberThis": "He spent a decade learning to sell cars to people. Then he flipped the script and made millions selling his negotiation skills back to buyers.",
+    "company": "Delivrd",
+    "episodeSlug": "2026-03-23",
+    "episodeTitle": "Negotiating Ninjas",
+    "storyTitle": "The $2.4M Car Negotiation Business"
+  },
+  {
+    "id": "2026-03-23-2",
+    "category": "Strategy & Positioning",
+    "lesson": "You don't have to choose between premium and affordable — you can be both if you're strategic about where you invest.",
+    "detail": "Texas Roadhouse surpassed Olive Garden as America's #1 casual dining chain with $5.5 billion in sales (14.7% growth vs. Olive Garden's 0.8%). Their secret: hand-cut steaks, fresh-baked rolls, and price increases below inflation. They invest in what the customer values and ruthlessly cut everything else.",
+    "useThis": "Ask yourself: what's the 'steak' — the thing your customer is really paying for? And what's the 'fancy decor' that looks nice but doesn't drive loyalty? Go all-in on substance, cut the rest.",
+    "rememberThis": "Texas Roadhouse didn't reinvent the steakhouse. They just refused to stop cutting the steak by hand while everyone else was cutting corners.",
+    "company": "Texas Roadhouse",
+    "episodeSlug": "2026-03-23",
+    "episodeTitle": "Negotiating Ninjas",
+    "storyTitle": "Texas Roadhouse Dethrones Olive Garden"
+  },
+  {
+    "id": "2026-03-23-3",
+    "category": "Risk & Resilience",
+    "lesson": "When regulations create artificial scarcity, the incentive to circumvent them skyrockets — and so do the consequences.",
+    "detail": "Super Micro's co-founder was indicted for smuggling $2.5B in Nvidia AI chips to China using elaborate schemes (shell companies, hair dryers to swap serial numbers). SMCI stock dropped 28%+ in a day. The case shows export controls have real teeth and these chips are strategic assets worth risking 20 years in prison for.",
+    "useThis": "In any industry where regulations shape who can buy what, the compliance layer is where both risk and opportunity live. Companies that build robust compliance become trusted partners. Also: when a company has repeated governance scandals, that's a pattern, not a one-off.",
+    "rememberThis": "They used a hair dryer to swap serial numbers on AI chips worth billions. That's not a tech story — it's a heist movie that ends in federal prison.",
+    "company": "Super Micro Computer",
+    "episodeSlug": "2026-03-23",
+    "episodeTitle": "Negotiating Ninjas",
+    "storyTitle": "Super Micro's $2.5B Chip Smuggling"
+  },
+  {
+    "id": "2026-03-25-1",
+    "category": "Strategy & Positioning",
+    "lesson": "Build the infrastructure before you need the strategy — the companies that win don't wait for permission to build.",
+    "detail": "Walmart patented AI-powered pricing algorithms and is installing digital shelf labels in all 4,600 US stores by end of 2026 (2,300 already live). They insist it's 'unrelated to dynamic pricing' — but the capability is being built regardless. Store associates report 75% less time on pricing tasks. The ROI is already showing up in labor savings alone.",
+    "useThis": "Ask: 'What capability should I be building now that I might not use for 12-18 months?' An email list, a dataset, a skill — the value is in having the infrastructure ready when the moment arrives.",
+    "rememberThis": "Walmart patented an algorithm to change prices in real time, installed the screens in 4,600 stores, and then said 'but we definitely won't use it for that.' Build the railroad — then decide where it goes.",
+    "company": "Walmart",
+    "episodeSlug": "2026-03-25",
+    "episodeTitle": "Robot Price Tags",
+    "storyTitle": "Walmart's Algorithm Patent"
+  },
+  {
+    "id": "2026-03-25-2",
+    "category": "Growth & Scaling",
+    "lesson": "The best platforms don't just facilitate transactions — they become the trusted guide through a life event.",
+    "detail": "Babylist grew from a simple baby registry to a $750M revenue company (up 45% YoY) by owning the entire new-parent journey: 20K sq ft flagship stores as content hubs, an original podcast, financial education, and influencer partnerships. They're reportedly exploring an IPO.",
+    "useThis": "Identify a 'life event' where customers are overwhelmed and spending heavily — weddings, moves, career changes, starting a business. Become the starting point for that journey, and you control the funnel for everything that follows.",
+    "rememberThis": "Babylist turned a baby registry into a $750 million media company. Don't sell the product — own the life moment that creates the demand.",
+    "company": "Babylist",
+    "episodeSlug": "2026-03-25",
+    "episodeTitle": "Robot Price Tags",
+    "storyTitle": "Babylist's $750M Media Empire"
+  },
+  {
+    "id": "2026-03-25-3",
+    "category": "Investing & Markets",
+    "lesson": "The best strategists hold two contradictory positions simultaneously: protect against what's happening now while building for what's coming next.",
+    "detail": "Larry Fink's 2026 letter compared blockchain to 'the internet in 1996' and predicted a $20T tokenization market by 2030 — while simultaneously downgrading US stocks and warning oil could hit $150/barrel. BlackRock manages $14T and $65B in stablecoin reserves. Defensive short-term, offensive long-term.",
+    "useThis": "Apply dual-timeline thinking: short-term, reduce risk and have runway. Long-term, learn about tokenization and position for where finance is heading. 'Staying invested has mattered far more than getting the timing right.'",
+    "rememberThis": "Larry Fink manages $14 trillion and just said blockchain is where the internet was in 1996. Then he downgraded stocks because of oil. That's not contradictory — that's thinking in two time horizons.",
+    "company": "BlackRock",
+    "episodeSlug": "2026-03-25",
+    "episodeTitle": "Robot Price Tags",
+    "storyTitle": "Larry Fink's Dual-Timeline Play"
+  },
+  {
+    "id": "2026-03-26-1",
+    "category": "Investing & Markets",
+    "lesson": "Scarcity plus narrative is the most powerful pricing force in markets — but eventually, math catches up to mania.",
+    "detail": "The Fundrise Innovation Fund (VCX) holds stakes in SpaceX, Anthropic, OpenAI, and Databricks. Its net asset value was $19/share but traded at $400+ — a 1,500% premium — because it was the only public way to own pre-IPO tech giants. Citron Research shorted it and the stock dropped 50% in a day.",
+    "useThis": "Understand the power of constrained supply: waitlists, limited drops, invite-only launches are pricing strategies. But if your value doesn't match the hype, the correction is brutal. Build the substance behind the scarcity.",
+    "rememberThis": "A fund worth $19 per share traded at $400 because it was the only way to own SpaceX before the IPO. Scarcity creates pricing power — but only math creates lasting value.",
+    "company": "Fundrise/VCX",
+    "episodeSlug": "2026-03-26",
+    "episodeTitle": "Secret SpaceX Stock",
+    "storyTitle": "The Secret SpaceX Stock That Broke Wall Street"
+  },
+  {
+    "id": "2026-03-26-2",
+    "category": "Growth & Scaling",
+    "lesson": "The companies that win next won't just have great products — they'll have great integrations into wherever shopping is heading.",
+    "detail": "Gap became the first major fashion brand to sell products inside Google's Gemini AI through the Universal Commerce Protocol (UCP). Built with Shopify, Target, Walmart, and Etsy, UCP is designed to be the standard for AI-powered shopping. Gap chose Google over ChatGPT for more brand control and customer data ownership.",
+    "useThis": "Whenever a new platform or protocol emerges, ask: 'Can I be the first in my category to show up here?' Early movers get disproportionate attention before it gets crowded. Gap didn't build the best hoodie — they built the best pipeline to sell it.",
+    "rememberThis": "Gap didn't redesign their hoodie — they redesigned how you buy it. The first brand on the new platform wins more than the best brand that shows up late.",
+    "company": "Gap",
+    "episodeSlug": "2026-03-26",
+    "episodeTitle": "Secret SpaceX Stock",
+    "storyTitle": "Gap's AI Hoodie Shopping"
+  },
+  {
+    "id": "2026-03-26-3",
+    "category": "Customer & Brand",
+    "lesson": "Your origin story is your most powerful marketing asset — but only if you live it authentically.",
+    "detail": "Salt & Stone, founded by ex-snowboarder Nima Jalali, hit $165M in revenue and sells one deodorant every five seconds. Advent International (managing $100B+) acquired a majority stake. They positioned as a performance brand, not a wellness brand — athlete endorsements from NASCAR to golf to basketball proved the product works.",
+    "useThis": "Start with a problem you personally have. 'I'm a snowboarder and nothing works for me' is more powerful than 'the deodorant market is $X billion.' Solve your own problem first, then bring in advocates who live the same lifestyle.",
+    "rememberThis": "A snowboarder who couldn't find good deodorant built a brand that sells one stick every five seconds and just got acquired by a $100B PE firm. The best businesses start with a founder who is also the customer.",
+    "company": "Salt & Stone",
+    "episodeSlug": "2026-03-26",
+    "episodeTitle": "Secret SpaceX Stock",
+    "storyTitle": "Salt & Stone's Snowboarder-to-PE Pipeline"
   }
 ]
